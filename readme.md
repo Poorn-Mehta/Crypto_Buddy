@@ -2,7 +2,7 @@
 ## How-to Guide
 
 ### NOTE
-This is a side-project I have developed for my own use. The primary purpose is to be able to set multiple price targets as well as percentage change goals, and get SMS alerts on your phone automatically. There might be much better tools available out there - offering this and much more, but I wanted to keep my portfolio in Excel and enjoy the development/learning process - so worked on this project. 
+This is a side-project I have developed for my own use. The primary purpose is to be able to set multiple price targets as well as percentage change goals - for as many crypto assets as you'd like, and get SMS alerts on your phone automatically (while the script is running). There might be much better tools available out there - offering this and much more, but I wanted to keep my portfolio in Excel and enjoy the development/learning process - so worked on this project. 
 Please note that it is very limited in features, and uses quite the basic techniques that I have recently learned. I am a beginner in Python, so there are lots of areas of improvement in this. If you want to contribute, please reach out to me and I will be happy to add you as a collaborator. If you have any comments/feedback/reviews/feature requests/queries - feel free to contact me. It would be great to know the perception and impact of this project!
 
 #### Contact Information
@@ -51,6 +51,9 @@ Type "help", "copyright", "credits" or "license" for more information.
   * Column G (Current) is where the python script will write data of market price
   * PH1 and PH2 refers to Price High Targets. Entering amount in dollar here results in following: if current price is greater than or equal to the one listed in PH1/2 column - then it sends an SMS alert, and clears the price target in relevant row (based on asset) in PH1/2 column. This is done in order to prevent duplicate alerts.
   * PL stands for Price Down, PU stands for Percentage Up, and PD stands for Percentage Down. They are all designed for sending customized SMS alerts.
+  * Please note that you can use it only for alerts as well - in which case you don't have to include information about all of the trades etc. In the simplest use case, add Asset symbol in Column A, and in the same row - set price targets. Set unused targets to 0. In order to use Percentage targets, you will have to have some value in Column E (Buy). 
+  * You can also increase/decrease number of price and/or percentage targets. Simply add more columns with proper naming conventions (PH1, PH2, PH3 etc.)
+  * There is a limitation however - in this project: Columns after Z (such as AA, AB etc.) are not scannable. I will try to support that in the future. So if you add too many targets and some of those column go beyond Z - it will never be triggered. 
 #### Save everything, and run Crypto.py
   * Open windows command prompt/cmd
   * Navigate to the folder containing Crypto.py and Crypto_Config.py (they have to be in same location)

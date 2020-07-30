@@ -34,7 +34,7 @@ Email: Poorn.Mehta@Colorado.EDU
   * You should see a text similar to this: Python 3.8.4 (tags/v3.8.4:dfa645a, Jul 13 2020, 16:46:45) [MSC v.1924 64 bit (AMD64)] on win32
 Type "help", "copyright", "credits" or "license" for more information.
   * If you do see it, your python is correctly added to the PATH
-  * If not, follow a guide [such as this] (https://datatofish.com/add-python-to-windows-path/) to get it to work
+  * If not, follow a guide [such as this](https://datatofish.com/add-python-to-windows-path/) to get it to work
   * Type exit() to get out of python shell
   * In cmd, type and execute following commands: 
     * python -m pip install --upgrade setuptools

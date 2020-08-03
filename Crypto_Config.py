@@ -44,7 +44,7 @@ SINCH_SERVICE_ID = ""
 SINCH_TOKEN = ""
 
 # Set the refresh speed, by default it is 1 minutes (60 seconds)
-POLLING_INTERVAL_DEFAULT_TIME_SECONDS = 60
+POLLING_INTERVAL_DEFAULT_TIME_SECONDS = 60	# > 3600 not supported (Sinch refresh)
 
 # To close after x number of seconds after Enter key is detected (2 for now)
 SCRIPT_EXIT_DELAY_SECONDS = 2

@@ -16,6 +16,8 @@ NUMBER_OF_ALPHABETS = 26
 CAPITAL_A_ASCII = 65
 ENTER_KEY_ASCII = 13
 
+SMS_REFRESH_INTERVAL_SECONDS = 3600
+
 # Config
 CHROME_PATH = CC.CHROMEDRIVER_LOCAL_PATH
 XLSX_FILE = CC.EXCEL_FILE_SRC_FOLDER_PATH + CC.EXCEL_FILE_NAME_WITH_EXTENSION
@@ -71,6 +73,7 @@ append_string = None
 sinch_client = None
 sinch_sms_handler = None
 alert_cells = [["" for col in range(ALERT_MAX)] for row in range(ALERT_COUNT)]
+sms_refresh_counter = 0
 
 def Setup_Chrome():
 
@@ -472,9 +475,18 @@ while 1:
 	my_workbook.save(XLSX_FILE)
 	print("Polling Interval is set to {} Seconds, Waiting...".format(TIMEOUT))
 
+	sms_refresh_counter += 1
+
 	if Input_TIMEOUT() == 1:
 
 		break;
+
+	else:
+
+		if sms_refresh_counter >= (SMS_REFRESH_INTERVAL_SECONDS / TIMEOUT):
+
+			sms_refresh_counter = 0
+			Setup_SMS()
 
 	print("End of Cycle")
 

@@ -1,4 +1,4 @@
-# Crypto Buddy v1.0
+# Crypto Buddy v1.1
 ## How-to Guide
 
 ### NOTE

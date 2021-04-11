@@ -5,7 +5,7 @@ import sys, time, os, msvcrt, xlwings, clx.xms, requests
 import Crypto_Config as CC
 
 # Constants
-TARGET_WRAPPER_FOR_COINGECKO = "div.col-lg-4.col-md-4.text-center.text-md-right.mt-md-0.pr-0"
+TARGET_WRAPPER_FOR_COINGECKO = "div.col-lg-5.col-md-5.text-center.text-md-right.mt-md-0.pr-0"
 TARGET_VALUE_CLASS_FOR_COINGECKO = "span.no-wrap"
 TARGET_COINGECKO_GENERIC_URL = "https://www.coingecko.com/en/coins/"
 
@@ -16,7 +16,7 @@ NUMBER_OF_ALPHABETS = 26
 CAPITAL_A_ASCII = 65
 ENTER_KEY_ASCII = 13
 
-SMS_REFRESH_INTERVAL_SECONDS = 3600
+SMS_REFRESH_INTERVAL_SECONDS = 600
 
 # Config
 CHROME_PATH = CC.CHROMEDRIVER_LOCAL_PATH

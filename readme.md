@@ -1,4 +1,4 @@
-# Crypto Buddy v1.1
+# Crypto Buddy v1.2
 ## How-to Guide
 
 ### NOTE
@@ -8,6 +8,7 @@ Please note that it is very limited in features, and uses quite the basic techni
 #### Contact Information
 Discord (preferred): SPiiKeSS#8587
 Email: Poorn.Mehta@Colorado.EDU
+Telegram: @poornmehta
 
 ### Please go through this guide before utilizing tool
 ### This tool is intended for utilization on Windows with Python 3.x 
@@ -15,11 +16,12 @@ Email: Poorn.Mehta@Colorado.EDU
 
 
 ## Setup
-#### Important: Chromedriver has to support the Chrome version you are running, so updating your Chrome may mean that you will have redownload the latest chromedriver 
-#### Download the Investments.xlsx file provided in this repository as a starting point. Note the path of download (to be used in Crypto_Config.py)
+#### Download all files in the repo (as a zip, or clone), and note the path of download (to be used in Crypto_Config.py)
+#### Download the Investments.xlsx file provided in this repository as a starting point. 
 #### Download Crypto.py and Crypto_Config.py files from this repository. It is advised that all of these files stay in same folder. 
-#### Download and install [google chrome](https://www.google.com/chrome/) (if you already don't have it)
-#### Download [chromedriver.exe](https://chromedriver.chromium.org/) Note the path of download (to be used in Crypto_Config.py)
+#### Download and install [google chrome](https://www.google.com/chrome/) (if you already don't have it).
+#### Download [chromedriver.exe](https://chromedriver.chromium.org/) Note the path of download (to be used in Crypto_Config.py).
+#### Important Note: Chromedriver has to support the Chrome version you are running, so updating your Chrome may mean that you will have redownload the latest chromedriver.
 #### Download and install Microsoft Visual C++ (latest) [Get it here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 
 #### You can also check out [this guide for more clarity](https://medium.com/@jacky_ttt/day060-fix-error-microsoft-visual-c-14-0-is-required-629413e798cd)
 #### Setup your account on [Sinch](https://www.sinch.com/)

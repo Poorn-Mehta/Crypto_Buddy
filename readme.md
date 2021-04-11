@@ -15,6 +15,7 @@ Email: Poorn.Mehta@Colorado.EDU
 
 
 ## Setup
+#### Important: Chromedriver has to support the Chrome version you are running, so updating your Chrome may mean that you will have redownload the latest chromedriver 
 #### Download the Investments.xlsx file provided in this repository as a starting point. Note the path of download (to be used in Crypto_Config.py)
 #### Download Crypto.py and Crypto_Config.py files from this repository. It is advised that all of these files stay in same folder. 
 #### Download and install [google chrome](https://www.google.com/chrome/) (if you already don't have it)
@@ -54,12 +55,8 @@ Type "help", "copyright", "credits" or "license" for more information.
   * Please note that you can use it only for alerts as well - in which case you don't have to include information about all of the trades etc. In the simplest use case, add Asset symbol in Column A, and in the same row - set price targets. Set unused targets to 0. In order to use Percentage targets, you will have to have some value in Column E (Buy). 
   * You can also increase/decrease number of price and/or percentage targets. Simply add more columns with proper naming conventions (PH1, PH2, PH3 etc.)
   * There is a limitation however - in this project: Columns after Z (such as AA, AB etc.) are not scannable. I will try to support that in the future. So if you add too many targets and some of those column go beyond Z - it will never be triggered. 
-#### Save everything, and run Crypto.py
-  * Open windows command prompt/cmd
-  * Navigate to the folder containing Crypto.py and Crypto_Config.py (they have to be in same location)
-    * Use cd command for navigation [look this up if you're not familiar with it](https://www.digitalcitizen.life/command-prompt-how-use-basic-commands)
-  * Type: python Crypto.py - and press Enter
-  * Keep it running if you want alerts. It might slow down your computer, so set the polling interval to a high number (~10 minutes or so). You can also press Enter key at any point to terminate the script (done at the end of a loop). You can terminate and restart as per your convenience. 
+#### Save everything, and run the tool by double clicking Run.bat
+  * Keep it running if you want constant alerts. It might slow down your computer, so set the polling interval to a high number (~10 minutes or so). You can also press Enter key at any point to terminate the script (done at the end of a loop). You can terminate and restart as per your convenience. 
 #### That's it! Have Fun! 
   
   

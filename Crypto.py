@@ -5,7 +5,8 @@ import sys, time, os, msvcrt, xlwings, clx.xms, requests
 import Crypto_Config as CC
 
 # Constants
-TARGET_WRAPPER_FOR_COINGECKO = "div.col-lg-4.col-md-4.text-center.text-md-right.mt-md-0.pr-0"
+#old "div.col-lg-4.col-md-4.text-center.text-md-right.mt-md-0.pr-0"
+TARGET_WRAPPER_FOR_COINGECKO = "div.col-lg-5.col-md-5.text-center.text-md-right.mt-md-0.pr-0"
 TARGET_VALUE_CLASS_FOR_COINGECKO = "span.no-wrap"
 TARGET_COINGECKO_GENERIC_URL = "https://www.coingecko.com/en/coins/"
 
@@ -16,7 +17,7 @@ NUMBER_OF_ALPHABETS = 26
 CAPITAL_A_ASCII = 65
 ENTER_KEY_ASCII = 13
 
-SMS_REFRESH_INTERVAL_SECONDS = 3600
+SMS_REFRESH_INTERVAL_SECONDS = 600
 
 # Config
 CHROME_PATH = CC.CHROMEDRIVER_LOCAL_PATH
@@ -493,3 +494,64 @@ while 1:
 print("Enter Detected!! Exiting in {} Seconds".format(EXIT_DELAY))
 time.sleep(EXIT_DELAY)
 browser.quit()
+
+# myval = crypto_spreadsheet.range("N2").value
+# print(type(myval))
+# print(myval)
+
+# mystr = "$123.456%"
+# print(mystr[1:])
+# print(mystr[:-1])
+
+# def tester(col_range, col_start = 0):
+# 	col_range_str = ""
+# 	for x in range(col_start, col_range, 1):
+# 		col_range_str = col_range_str + Excel_Num_To_Col_Name(x + 1)
+# 	return col_range_str
+
+# print(tester(5))
+# print(tester(8, 5))
+
+# mycell = "C2"
+# mycell2 = "DF34"
+# max_alerts = 5
+# myarr = [""]*max_alerts
+# myarr[0] = mycell
+# myarr[1] = mycell2
+
+# print("Cols are: {}  {}".format(myarr[0][0:1], myarr[1][0:2]))
+# print(len(myarr))
+
+# print(Excel_Col_Name_To_Num("F"))
+
+# max_alerts_categories = 3
+# max_alerts_per_category = 5
+# arr2d = [["" for i in range(max_alerts_per_category)] for j in range(max_alerts_categories)] 
+# arr2d[0][0] = "A1"
+# arr2d[0][1] = "B1"
+# arr2d[1][0] = "C2"
+# arr2d[1][1] = "DF34"
+
+# print("Elems {}".format(arr2d))
+# print("Cols are: {}  {}".format(arr2d[1][0][0:1], arr2d[1][1][0:2]))
+
+# print("Debug Alerts: {}".format(alert_cells))
+
+# print("testing 399")
+# Handle_Alerts("ETH", 399, 2)
+# print("testing 400")
+# Handle_Alerts("ETH", 400, 2)
+# print("testing 500")
+# Handle_Alerts("ETH", 500, 2)
+# print("testing 200")
+# Handle_Alerts("ETH", 200, 2)
+# print("testing 100")
+# Handle_Alerts("ETH", 100, 2)
+# print("testing 100%")
+# Handle_Alerts("ETH", 600, 2)
+# print("testing 500%")
+# Handle_Alerts("ETH", 1800, 2)
+# print("testing -30%")
+# Handle_Alerts("ETH", 210, 2)
+# print("testing -60%")
+# Handle_Alerts("ETH", 120, 2)

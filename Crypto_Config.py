@@ -1,27 +1,27 @@
 # Set the path to chromedriver
 # For example: CHROMEDRIVER_LOCAL_PATH = "C:/Users/poorn/AppData/Local/Programs/Python/chromedriver.exe"
-CHROMEDRIVER_LOCAL_PATH = "C:/Users/poorn/AppData/Local/Programs/Python/chromedriver.exe"
+CHROMEDRIVER_LOCAL_PATH = ""
 
 # Set the path to excel file
 # For example: EXCEL_FILE_SRC_FOLDER_PATH = "C:/Users/poorn/Desktop/Files/Crypto/" and 
 # You can leave EXCEL_FILE_SRC_FOLDER_PATH if Crypto.py, Crypto_Config.py and xlsx file are in same folder
-EXCEL_FILE_SRC_FOLDER_PATH = "C:/Users/poorn/Desktop/Files/Crypto/"
+EXCEL_FILE_SRC_FOLDER_PATH = ""
+EXCEL_FILE_NAME_WITH_EXTENSION = "Investments.xlsx"
 
 # Name of spreadsheet
-EXCEL_FILE_NAME_WITH_EXTENSION = "Investments.xlsx"
+EXCEL_SPREADSHEET_NAME = "Crypto"
 
 # You can edit the following variables as per your convenience 
 # I don't recommend changing unless you know what you're doing
 # I will probably add comments describing what each one of them does in future
 # Feel free to ask me if you want to customize but are facing issues
-EXCEL_SPREADSHEET_NAME = "Crypto"
 EXCEL_ASSET_IDENTIFIER = "Asset"
 EXCEL_COLUMNS_RANGE_FOR_ASSET = 10 # > 26 not supported
 EXCEL_CURRENT_PRICE_IDENTIFIER = "Current"
 EXCEL_COLUMNS_RANGE_FOR_CURRENT_PRICE = 20 # > 26 not supported
 EXCEL_PERCENT_INDENTIFIER = "Percent Change"
 EXCEL_COLUMNS_RANGE_FOR_PERCENT = 20 # > 26 not supported
-EXCEL_MAX_CRYPTO_ASSETS = 110
+EXCEL_MAX_CRYPTO_ASSETS = 65
 EXCEL_MAX_ROWS_FOR_IDENTIFIER = 5
 EXCEL_ALERT_IDENTIFIERS = ["PH", "PL", "PU", "PD"]
 EXCEL_ALERT_VAL_HIGH_IDENTIFIER_INDEX = 0
@@ -38,10 +38,10 @@ EXCEL_ALERT_INVALID = 0
 # Source phone number will be the one that you 'pick' when signing up for Sinch SMS
 # Target phone number is your own
 # While setting up Sinch SMS, you will at some point get Service ID and Token
-SINCH_SOURCE_PHONE_NUMBER = "14356776951"
-SINCH_TARGET_PHONE_NUMBER = "17209400389"
-SINCH_SERVICE_ID = "4a3aa6343da1433c81b9de26de4c8dd8"
-SINCH_TOKEN = "dcac07a3e4e14ab3926503d0e7d4b196"
+SINCH_SOURCE_PHONE_NUMBER = ""
+SINCH_TARGET_PHONE_NUMBER = ""
+SINCH_SERVICE_ID = ""
+SINCH_TOKEN = ""
 
 # Set the refresh speed, by default it is 1 minutes (60 seconds)
 POLLING_INTERVAL_DEFAULT_TIME_SECONDS = 60	# > 3600 not supported (Sinch refresh)
@@ -148,7 +148,7 @@ CRYPTO_LOOKUP = {
 	"AOA"  : "aurora",
 	"DMG"  : "dmm-governance",
 	"AERGO": "aergo",
-	"NPXS" : "pundi-x-old",
+	"NPXS" : "pundi-x",
 	"HEX"  : "hex",
 	"NYZO" : "nyzo",
 	"POLY" : "polymath-network",
@@ -159,63 +159,8 @@ CRYPTO_LOOKUP = {
 	"OGN"  : "origin-protocol",
 	"DAG"  : "constellation",
 	"RCN"  : "ripio-credit-network",
-#	"MCO"  : "mco",
+	"MCO"  : "mco",
 	"AKRO" : "akropolis",
 	"ZEL"  : "zelcash",
-	"ADB"  : "adbank",
-	"MLN"  : "melon",
-	"MCB"  : "mcdex",
-	"REL"  : "relevant",
-	"TOMO" : "tomochain",
-	"COTI" : "coti",
-	"PCX"  : "chainx",
-	"SRK"  : "sparkpoint",
-	"DOS"  : "dos-network",
-	"CEEK" : "ceek-smart-vr-token",
-	"DOT"  : "polkadot",
-	"SWAP" : "trustswap",
-	"FRM"  : "ferrum-network",
-	"EDG"  : "edgeware",
-	"DAPS" : "daps-coin",
-	"CRPT" : "crypterium",
-	"SXP"  : "swipe",
-	"UTK"  : "utrust",
-	"SBREE": "cbdao",
-	"FTM"  : "fantom",
-	"ZEN"  : "horizen",
-	"PERX" : "peerex-network",
-	"DIA"  : "dia",
-	"ESS"  : "essentia",
-	"FERA" : "fera",
-	"TRADE": "unitrade",
-	"OM"   : "mantra-dao",
-	"WOM"  : "wom-protocol",
-	"PASTA": "spaghetti",
-	"YFT"  : "yield-farming-token",
-	"UNCX" : "unicrypt",
-	"PYLON": "pylon-finance",
-	"YFT"  : "yield-farming-token",
-	"EFX"  : "effect-ai",
-	"CHR"  : "chromia",
-	"ANKR" : "ankr-network",
-	"BID"  : "bidao",
-	"UNI"  : "uniswap",
-	"N3RD" : "n3rd-finance",
-	"PAR"  : "parachute",
-	"MCP"  : "my-crypto-play",
-	"RAMP" : "ramp",
-	"INJ"  : "injective-protocol",
-	"KAI"  : "kardiachain",
-	"RING" : "darwinia-network-native-token",
-	"MIR"  : "mirror-protocol",
-	"MP3"  : "mp3",
-	"LIT"  : "litentry",
-	"DEOR" : "decentralized-oracle",
-	"GDAO" : "governor-dao",
-	"YFSI" : "yfscience",
-	"KEK"  : "cryptokek",
-	"MOD"  : "modefi",
-	"BART" : "bartertrade",
-	"UDO"  : "unido",
-	"NDS"  : "nodeseeds"
+	"ADB"  : "adbank"
 }

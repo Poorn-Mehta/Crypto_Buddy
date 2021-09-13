@@ -1,16 +1,10 @@
-from selenium import webdriver
-from selenium.common import exceptions
-import sys, time, os, msvcrt, xlwings, clx.xms, requests
+import sys, time, os, msvcrt, xlwings, requests, json                    
 
 import Crypto_Config as CC
 
 # Constants
-TARGET_WRAPPER_FOR_COINGECKO = "div.col-lg-5.col-md-5.text-center.text-md-right.mt-md-0.pr-0"
-TARGET_VALUE_CLASS_FOR_COINGECKO = "span.no-wrap"
-TARGET_COINGECKO_GENERIC_URL = "https://www.coingecko.com/en/coins/"
-
-SINCH_QUEUED_STATUS_CODE = 400
-SINCH_DISPLATCHED_STATUS_CODE = 401
+TARGET_COINGECKO_API_ID_START = "https://api.coingecko.com/api/v3/simple/price?ids="
+TARGET_COINGECKO_API_PRICE_START = "&vs_currencies="
 
 NUMBER_OF_ALPHABETS = 26
 CAPITAL_A_ASCII = 65
@@ -19,7 +13,6 @@ ENTER_KEY_ASCII = 13
 SMS_REFRESH_INTERVAL_SECONDS = 600
 
 # Config
-CHROME_PATH = CC.CHROMEDRIVER_LOCAL_PATH
 XLSX_FILE = CC.EXCEL_FILE_SRC_FOLDER_PATH + CC.EXCEL_FILE_NAME_WITH_EXTENSION
 SPREADSHEET_NAME = CC.EXCEL_SPREADSHEET_NAME
 ASSET_ID = CC.EXCEL_ASSET_IDENTIFIER
@@ -29,6 +22,7 @@ CURRENT_PRICE_COLS = CC.EXCEL_COLUMNS_RANGE_FOR_CURRENT_PRICE
 PERCENT_ID = CC.EXCEL_PERCENT_INDENTIFIER
 PERCENT_COLS = CC.EXCEL_COLUMNS_RANGE_FOR_PERCENT
 ASSETS_MAX = CC.EXCEL_MAX_CRYPTO_ASSETS
+COINGECKO_MAX = CC.EXCEL_MAX_COINGECKO_ASSETS
 ROWS_ID_MAX = CC.EXCEL_MAX_ROWS_FOR_IDENTIFIER
 ALERT_IDS = CC.EXCEL_ALERT_IDENTIFIERS
 ALERT_PH_ID = CC.EXCEL_ALERT_VAL_HIGH_IDENTIFIER_INDEX
@@ -39,16 +33,17 @@ ALERT_COLS = CC.EXCEL_COLUMNS_RANGE_FOR_ALERTS
 ALERT_MAX = CC.EXCEL_ALERTS_MAX_PER_CATEGORY
 ALERT_COUNT = CC.EXCEL_ALERT_CATEGORY_COUNT
 ALERT_INVALID = CC.EXCEL_ALERT_INVALID
-SMS_SRC = CC.SINCH_SOURCE_PHONE_NUMBER
-SMS_DEST = CC.SINCH_TARGET_PHONE_NUMBER
-SMS_ID = CC.SINCH_SERVICE_ID
-SMS_TOKEN = CC.SINCH_TOKEN
 TIMEOUT = CC.POLLING_INTERVAL_DEFAULT_TIME_SECONDS
 EXIT_DELAY = CC.SCRIPT_EXIT_DELAY_SECONDS
 ASSET_LUT = CC.CRYPTO_LOOKUP
 
+if (ASSETS_MAX % COINGECKO_MAX) != 0:
+	API_ARR_SIZE = int(ASSETS_MAX / COINGECKO_MAX) + 1
+else:
+	API_ARR_SIZE = int(ASSETS_MAX / COINGECKO_MAX)
+
 # Global Variables
-browser = None
+coingecko_api_arr = [""] * API_ARR_SIZE
 my_workbook = None
 crypto_spreadsheet = None
 crypto_mylist = []
@@ -75,21 +70,6 @@ sinch_sms_handler = None
 alert_cells = [["" for col in range(ALERT_MAX)] for row in range(ALERT_COUNT)]
 sms_refresh_counter = 0
 
-def Setup_Chrome():
-
-	global browser
-
-	print("Setting up Chrome...")
-
-	option = webdriver.ChromeOptions()
-	option.add_experimental_option("prefs", {"profile.default_content_setting_values.notifications" : 2})
-	option.add_argument("--ignore-certificate-errors")
-	option.add_argument("--ignore-ssl-errors")
-
-	browser = webdriver.Chrome(executable_path=CHROME_PATH, options=option)
-
-	return None
-
 def Excel_Init():
 
 	print("Setting up Excel...")
@@ -103,24 +83,24 @@ def Excel_Init():
 
 def Excel_Num_To_Col_Name(number):
 
-    col_name = ""
+	col_name = ""
 
-    while number > 0:
+	while number > 0:
 
-        number, remainder = divmod ((number - 1), NUMBER_OF_ALPHABETS) 
-        col_name = chr(remainder + CAPITAL_A_ASCII) + col_name
+		number, remainder = divmod ((number - 1), NUMBER_OF_ALPHABETS) 
+		col_name = chr(remainder + CAPITAL_A_ASCII) + col_name
 
-    return col_name
+	return col_name
 
 def Excel_Col_Name_To_Num(name):
-    
-    number = 0
-    
-    for character in name:
+	
+	number = 0
+	
+	for character in name:
 
-        number = (number * NUMBER_OF_ALPHABETS) + (ord(character) - CAPITAL_A_ASCII) + 1 
+		number = (number * NUMBER_OF_ALPHABETS) + (ord(character) - CAPITAL_A_ASCII) + 1 
 
-    return number
+	return number
 
 def Find_Target_Column_Start_Row(col_range, identifier, custom_col_start = 0):
 
@@ -220,66 +200,28 @@ def Prepare_My_Crypto_List():
 
 	return None
 
-def Setup_SMS():
+def Desktop_Alert(crypto_name, alert_type, alert_value, current_value):
 
-	print("Setting up SMS service with Sinch...")
+	alert_string = "Alert for {}!!! ".format(crypto_name)
 
-	global sinch_client, sinch_sms_handler
-
-	sinch_client = clx.xms.Client(service_plan_id=SMS_ID, token=SMS_TOKEN)
-
-	sinch_sms_handler = clx.xms.api.MtBatchTextSmsCreate()
-	sinch_sms_handler.sender = SMS_SRC
-	sinch_sms_handler.recipients = {SMS_DEST}
-
-	return None
-
-def Format_Send_SMS(crypto_name, alert_type, alert_value, current_value):
-
-	global sinch_client, sinch_sms_handler
-
-	sms_alert_string = "Alert for {}!!! ".format(crypto_name)
-	
 	if (alert_type == ALERT_PH_ID):
-		sms_alert_string += "Price High Goal of ${} Reached with ${}".format(alert_value, current_value)
+		alert_string += "Price High Goal of ${} Reached with ${}".format(alert_value, current_value)
 	elif (alert_type == ALERT_PL_ID):
-		sms_alert_string += "Price Low Goal of ${} Reached with ${}".format(alert_value, current_value)
+		alert_string += "Price Low Goal of ${} Reached with ${}".format(alert_value, current_value)
 	elif (alert_type == ALERT_PU_ID):
 		perc_str = f"{current_value:.2f}"
-		sms_alert_string += "Percentage Up Goal of {}% Reached with {}%".format(alert_value, perc_str)
+		alert_string += "Percentage Up Goal of {}% Reached with {}%".format(alert_value, perc_str)
 	elif (alert_type == ALERT_PD_ID):
 		perc_str = f"{current_value:.2f}"
-		sms_alert_string += "Percentage Down Goal of {}% Reached with {}%".format(alert_value, perc_str)
+		alert_string += "Percentage Down Goal of {}% Reached with {}%".format(alert_value, perc_str)
 	else:
 		sms_alert_string += "Unknown Alert Type"
 
-	print("Sending Following SMS to {}".format(SMS_DEST))
-	print(sms_alert_string)
-
-	sinch_sms_handler.body = sms_alert_string
-	batch = sinch_client.create_batch(sinch_sms_handler)
-
-	code = sinch_client.fetch_delivery_report(batch.batch_id, 'summary').statuses[0].code
-
-	while (code == SINCH_QUEUED_STATUS_CODE) or (code == SINCH_DISPLATCHED_STATUS_CODE):
-
-		code = sinch_client.fetch_delivery_report(batch.batch_id, 'summary').statuses[0].code
-
-	status = sinch_client.fetch_delivery_report(batch.batch_id, 'summary').statuses[0].status
-
-	if code == 0:
-
-		print("Successfully Sent Alert over SMS")
-
-	else:
-
-		print("Error while Sending Alert over SMS - Code: {} Status: {}".format(code, status))
-
-	return None
-
+	print("Sending Alert: {}".format(alert_string))
+	os.system(f"msg * {alert_string}")
 def Setup_Alerts():
 	
-	print("Setting up SMS Alerts...")
+	print("Setting up Alerts...")
 
 	global alert_cells, percent_info
 
@@ -332,8 +274,8 @@ def Handle_Alerts(crypto_name, current_price, row):
 			alert_value = crypto_spreadsheet.range(alert_value_cell).value
 
 			if (alert_value > ALERT_INVALID) and (current_price >= alert_value):
-
-				Format_Send_SMS(crypto_name, ALERT_PH_ID, alert_value, current_price)
+				
+				Desktop_Alert(crypto_name, ALERT_PH_ID, alert_value, current_price)
 				crypto_spreadsheet.range(alert_value_cell).value = ALERT_INVALID
 
 	for x in range(ALERT_MAX):
@@ -345,8 +287,8 @@ def Handle_Alerts(crypto_name, current_price, row):
 			alert_value = crypto_spreadsheet.range(alert_value_cell).value
 
 			if (alert_value > ALERT_INVALID) and (current_price <= alert_value):
-
-				Format_Send_SMS(crypto_name, ALERT_PL_ID, alert_value, current_price)
+			
+				Desktop_Alert(crypto_name, ALERT_PL_ID, alert_value, current_price)
 				crypto_spreadsheet.range(alert_value_cell).value = ALERT_INVALID
 
 	if percent is not None:
@@ -362,8 +304,8 @@ def Handle_Alerts(crypto_name, current_price, row):
 				if (alert_value > ALERT_INVALID) and (percent > 0):
 
 					if percent >= alert_value:
-
-						Format_Send_SMS(crypto_name, ALERT_PU_ID, alert_value, percent)
+					
+						Desktop_Alert(crypto_name, ALERT_PU_ID, alert_value, percent)
 						crypto_spreadsheet.range(alert_value_cell).value = ALERT_INVALID
 
 		for x in range(ALERT_MAX):
@@ -377,49 +319,94 @@ def Handle_Alerts(crypto_name, current_price, row):
 				if (alert_value < ALERT_INVALID) and (alert_value > -100) and (percent < 0):
 
 					if percent <= alert_value:
-
-						Format_Send_SMS(crypto_name, ALERT_PD_ID, alert_value, percent)
+					
+						Desktop_Alert(crypto_name, ALERT_PD_ID, alert_value, percent)
 						crypto_spreadsheet.range(alert_value_cell).value = ALERT_INVALID
 
 	return None
 
 def Update_Crypto_Prices():
 
-	global crypto_mylist, ASSET_LUT, browser, crypto_spreadsheet
+	global crypto_mylist, ASSET_LUT, ASSETS_MAX, browser, crypto_spreadsheet, coingecko_api_arr
+
+	my_crypto_prices = [None] * API_ARR_SIZE
+	my_crypto_prices_json = [None] * API_ARR_SIZE
+
+	for api_index in range(API_ARR_SIZE):
+
+		start_index = api_index * COINGECKO_MAX
+		last_index = (api_index + 1) * COINGECKO_MAX
+
+		if last_index >= len(crypto_mylist):
+
+			last_index = len(crypto_mylist)
+
+		coingecko_api_arr[api_index] = TARGET_COINGECKO_API_ID_START
+		counter = start_index
+
+		for my_crypto in range(start_index, last_index):
+
+			if crypto_mylist[my_crypto].upper() in ASSET_LUT:
+
+				coingecko_api_arr[api_index] += ASSET_LUT[crypto_mylist[my_crypto].upper()]
+				coingecko_api_arr[api_index] += "%2C"
+				counter += 1
+
+			else:
+
+				print("Error!! Crypto Asset " + crypto_mylist[my_crypto].upper() + " Not Added in the CRYPTO_LOOKUP")
+
+		coingecko_api_arr[api_index] = coingecko_api_arr[api_index][:-3]
+		coingecko_api_arr[api_index] += TARGET_COINGECKO_API_PRICE_START
+
+		for x in range(start_index, counter):
+
+			coingecko_api_arr[api_index] += "usd%2C"
+
+		coingecko_api_arr[api_index] = coingecko_api_arr[api_index][:-3]
+
+		my_crypto_prices[api_index] = requests.get(coingecko_api_arr[api_index])
+		my_crypto_prices_json[api_index] = my_crypto_prices[api_index].json()
+
+		if last_index == len(crypto_mylist):
+
+			break
 
 	for my_crypto in range(len(crypto_mylist)):
 
-		if crypto_mylist[my_crypto].upper() not in ASSET_LUT:
+		if crypto_mylist[my_crypto].upper() in ASSET_LUT:
 
-			print("Error!! Crypto Asset " + crypto_mylist[my_crypto].upper() + " Not Added in the CRYPTO_LOOKUP")
+			target_json_index = 0
+			temp_crypto = my_crypto
 
-		else:
+			while (temp_crypto >= COINGECKO_MAX):
 
-			browser.get(TARGET_COINGECKO_GENERIC_URL + ASSET_LUT[crypto_mylist[my_crypto].upper()])
-			target_wrapper = browser.find_elements_by_css_selector(TARGET_WRAPPER_FOR_COINGECKO)
+				temp_crypto -= COINGECKO_MAX
+				target_json_index += 1
+			
+			target_json = my_crypto_prices_json[target_json_index]
+			value = target_json[ASSET_LUT[crypto_mylist[my_crypto].upper()]]["usd"]
 
-			for value_class in target_wrapper:
+			if value is not None:
 
-				my_crypto_price_str = value_class.find_element_by_css_selector(TARGET_VALUE_CLASS_FOR_COINGECKO).text[1:]
-				my_crypto_price_str = my_crypto_price_str.replace(",", "")
-
-				if my_crypto_price_str != "":
-					
-					my_crypto_price_flt = float(my_crypto_price_str)
-					print("Current Price for " + crypto_mylist[my_crypto].upper() + " is: ${}".format(my_crypto_price_flt))
-
-					if current_price_info["found"] == 1:
-
-						for column in current_price_info["column"]:
-
-							row = current_price_info["row_num"] + my_crypto
-							market_price_cell = "{}{}".format(column, row)
-							crypto_spreadsheet.range(market_price_cell).value = my_crypto_price_flt
-							Handle_Alerts(crypto_mylist[my_crypto].upper(), my_crypto_price_flt, row)
-
+				if value < 0.000001:
+					my_crypto_price_flt = format(value, "0.15f")
 				else:
+					my_crypto_price_flt = float("{:f}".format(value))
+				print("Current Price for " + crypto_mylist[my_crypto].upper() + " is: ${}".format(my_crypto_price_flt))
 
-					print("Failed to get Price for " + crypto_mylist[my_crypto].upper())
+				if current_price_info["found"] == 1:
+
+					for column in current_price_info["column"]:
+
+						row = current_price_info["row_num"] + my_crypto
+						market_price_cell = "{}{}".format(column, row)
+						crypto_spreadsheet.range(market_price_cell).value = my_crypto_price_flt
+						Handle_Alerts(crypto_mylist[my_crypto].upper(), my_crypto_price_flt, row)
+
+			else:
+
+				print("Error!! Crypto Asset " + ASSET_LUT[crypto_mylist[my_crypto].upper()] + " Not Found by CoinGecko API")
 
 	return None
 
@@ -457,12 +444,10 @@ def Input_TIMEOUT():
 
 	return retval
 
-Setup_Chrome()
 Excel_Init()
 Get_Asset_Cell()
 Get_Current_Price_Cell()
 Prepare_My_Crypto_List()
-Setup_SMS()
 Setup_Alerts()
 
 while 1:
@@ -486,10 +471,8 @@ while 1:
 		if sms_refresh_counter >= (SMS_REFRESH_INTERVAL_SECONDS / TIMEOUT):
 
 			sms_refresh_counter = 0
-			Setup_SMS()
 
 	print("End of Cycle")
 
 print("Enter Detected!! Exiting in {} Seconds".format(EXIT_DELAY))
 time.sleep(EXIT_DELAY)
-browser.quit()

@@ -2,7 +2,7 @@
 ## How-to Guide
 
 ### NOTE
-This is a side-project I have developed for my own use. The primary purpose is to be able to set multiple price targets as well as percentage change goals - for as many crypto assets as you'd like, and get SMS alerts on your phone automatically (while the script is running). There might be much better tools available out there - offering this and much more, but I wanted to keep my portfolio in Excel and enjoy the development/learning process - so worked on this project. 
+This is a side-project I have developed for my own use. The primary purpose is to be able to set multiple price targets as well as percentage change goals - for as many crypto assets as you'd like, and get desktop notification/alerts on your computer automatically (while the script is running). There might be much better tools available out there - offering this and much more, but I wanted to keep my portfolio in Excel and enjoy the development/learning process - so worked on this project. 
 Please note that it is very limited in features, and uses quite the basic techniques that I have recently learned. I am a beginner in Python, so there are lots of areas of improvement in this. If you want to contribute, please reach out to me and I will be happy to add you as a collaborator. If you have any comments/feedback/reviews/feature requests/queries - feel free to contact me. It would be great to know the perception and impact of this project!
 
 #### Contact Information
@@ -18,18 +18,9 @@ Telegram: @poornmehta
 ## Setup
 #### Download all files in the repo (as a zip, or clone), and note the path of download (to be used in Crypto_Config.py)
 #### Download the Investments.xlsx file provided in this repository as a starting point. 
-#### Download Crypto.py and Crypto_Config.py files from this repository. It is advised that all of these files stay in same folder. 
-#### Download and install [google chrome](https://www.google.com/chrome/) (if you already don't have it).
-#### Download [chromedriver.exe](https://chromedriver.chromium.org/) Note the path of download (to be used in Crypto_Config.py).
-#### Important Note: Chromedriver has to support the Chrome version you are running, so updating your Chrome may mean that you will have redownload the latest chromedriver.
+#### Download Crypto.py and Crypto_Config.py files from this repository. It is advised that all of these files stay in same folder.
 #### Download and install Microsoft Visual C++ (latest) [Get it here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 
 #### You can also check out [this guide for more clarity](https://medium.com/@jacky_ttt/day060-fix-error-microsoft-visual-c-14-0-is-required-629413e798cd)
-#### Setup your account on [Sinch](https://www.sinch.com/)
-  * Create your account for SMS
-  * A number of countries are supported, the service is paid - but quite useful and affordable
-  * It will ask you to pick a phone number to send SMS from 
-  * Once you pick the phone number and complete procedure, you will get your Sinch Service ID and Token Number. Save this both - will be needed later.
-  * You will need to activate the account in order to edit the SMS text content, this process might take a few hours 
 #### Download and install [Python for Windows](https://www.python.org/downloads/windows/)
   * I recommend using Windows x86-64 web-based installer
   * Please check the option "Add to PATH" which should come up once the setup is launched 

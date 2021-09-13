@@ -1,11 +1,5 @@
-# Set the path to chromedriver
-# For example: CHROMEDRIVER_LOCAL_PATH = "C:/Users/poorn/AppData/Local/Programs/Python/chromedriver.exe"
-CHROMEDRIVER_LOCAL_PATH = ""
-
-# Set the path to excel file
-# For example: EXCEL_FILE_SRC_FOLDER_PATH = "C:/Users/poorn/Desktop/Files/Crypto/" and 
-# You can leave EXCEL_FILE_SRC_FOLDER_PATH if Crypto.py, Crypto_Config.py and xlsx file are in same folder
-EXCEL_FILE_SRC_FOLDER_PATH = ""
+# Set the path and name of excel file
+EXCEL_FILE_SRC_FOLDER_PATH = "D:/GitHub/Crypto_Buddy/"
 EXCEL_FILE_NAME_WITH_EXTENSION = "Investments.xlsx"
 
 # Name of spreadsheet
@@ -21,7 +15,8 @@ EXCEL_CURRENT_PRICE_IDENTIFIER = "Current"
 EXCEL_COLUMNS_RANGE_FOR_CURRENT_PRICE = 20 # > 26 not supported
 EXCEL_PERCENT_INDENTIFIER = "Percent Change"
 EXCEL_COLUMNS_RANGE_FOR_PERCENT = 20 # > 26 not supported
-EXCEL_MAX_CRYPTO_ASSETS = 65
+EXCEL_MAX_CRYPTO_ASSETS = 110
+EXCEL_MAX_COINGECKO_ASSETS = 20
 EXCEL_MAX_ROWS_FOR_IDENTIFIER = 5
 EXCEL_ALERT_IDENTIFIERS = ["PH", "PL", "PU", "PD"]
 EXCEL_ALERT_VAL_HIGH_IDENTIFIER_INDEX = 0
@@ -33,35 +28,23 @@ EXCEL_ALERTS_MAX_PER_CATEGORY = 10
 EXCEL_ALERT_CATEGORY_COUNT = 4
 EXCEL_ALERT_INVALID = 0
 
-# Add information from Sinch
-# For phone numbers, pay attention to format (e.g. +1(123)456-7890 should be entered as SINCH_SOURCE_PHONE_NUMBER = "11234567890")
-# Source phone number will be the one that you 'pick' when signing up for Sinch SMS
-# Target phone number is your own
-# While setting up Sinch SMS, you will at some point get Service ID and Token
-SINCH_SOURCE_PHONE_NUMBER = ""
-SINCH_TARGET_PHONE_NUMBER = ""
-SINCH_SERVICE_ID = ""
-SINCH_TOKEN = ""
-
-# Set the refresh speed, by default it is 1 minutes (60 seconds)
-POLLING_INTERVAL_DEFAULT_TIME_SECONDS = 60	# > 3600 not supported (Sinch refresh)
+# Set the refresh speed, by default it is 15 seconds
+POLLING_INTERVAL_DEFAULT_TIME_SECONDS = 15
 
 # To close after x number of seconds after Enter key is detected (2 for now)
 SCRIPT_EXIT_DELAY_SECONDS = 2
 
-# If your crypto is not anywhere in this list, it will not be able to pull latest price from coingecko
-# Add the last part of full URL in here, for example ETH is at https://www.coingecko.com/en/coins/ethereum
-# So you add "ETH"  : "ethereum" in following dictionary
+# Visit https://www.coingecko.com/en/api/documentation and get list through GET /coins/list to add a valid api lookup key for an asset
 CRYPTO_LOOKUP = {
 	"BTC"  : "bitcoin",
 	"ETH"  : "ethereum",
-	"XRP"  : "xrp",
+	"XRP"  : "ripple",
 	"BCH"  : "bitcoin-cash",
 	"ADA"  : "cardano",
 	"BSV"  : "bitcoin-sv",
 	"LINK" : "chainlink",
 	"LTC"  : "litecoin",
-	"CRO"  : "crypto-com-coin",
+	"CRO"  : "crypto-com-chain",
 	"BNB"  : "binance-coin",
 	"EOS"  : "eos",
 	"XTZ"  : "tezos",
@@ -92,7 +75,7 @@ CRYPTO_LOOKUP = {
 	"FTT"  : "ftx-token",
 	"ALGO" : "algorand",
 	"DGB"  : "digibyte",
-	"THETA": "theta-network",
+	"THETA": "theta-token",
 	"QTUM" : "qtum",
 	"CETH" : "compound-ether",
 	"PAX"  : "paxos-standard",
@@ -103,7 +86,7 @@ CRYPTO_LOOKUP = {
 	"ERD"  : "elrond",
 	"ZIL"  : "zilliqa",
 	"HBAR" : "hedera-hashgraph",
-	"ENJ"  : "enjin-coin",
+	"ENJ"  : "enjincoin",
 	"DCR"  : "decred",
 	"LSK"  : "lisk",
 	"BCD"  : "bitcoin-diamond",
@@ -148,20 +131,20 @@ CRYPTO_LOOKUP = {
 	"AOA"  : "aurora",
 	"DMG"  : "dmm-governance",
 	"AERGO": "aergo",
-	"NPXS" : "pundi-x-old",
+	"NPXS" : "pundi-x",
 	"HEX"  : "hex",
 	"NYZO" : "nyzo",
-	"POLY" : "polymath-network",
-	"MOON" : "moon-coin",
-	"OMG"  : "omg-network",
-	"QKC"  : "quarkchain",
+	"POLY" : "polymath",
+	"MOON" : "mooncoin-v1",
+	"OMG"  : "omisego",
+	"QKC"  : "quark-chain",
 	"CELR" : "celer-network",
 	"OGN"  : "origin-protocol",
-	"DAG"  : "constellation",
+	"DAG"  : "constellation-labs",
 	"RCN"  : "ripio-credit-network",
 #	"MCO"  : "mco",
 	"AKRO" : "akropolis",
-	"ZEL"  : "zelcash",
+	"FLUX" : "zelcash",
 	"ADB"  : "adbank",
 	"MLN"  : "melon",
 	"MCB"  : "mcdex",
@@ -171,33 +154,33 @@ CRYPTO_LOOKUP = {
 	"PCX"  : "chainx",
 	"SRK"  : "sparkpoint",
 	"DOS"  : "dos-network",
-	"CEEK" : "ceek-smart-vr-token",
+	"CEEK" : "ceek",
 	"DOT"  : "polkadot",
 	"SWAP" : "trustswap",
 	"FRM"  : "ferrum-network",
 	"EDG"  : "edgeware",
-	"DAPS" : "daps-coin",
+	"DAPS" : "daps-token",
 	"CRPT" : "crypterium",
 	"SXP"  : "swipe",
 	"UTK"  : "utrust",
 	"SBREE": "cbdao",
 	"FTM"  : "fantom",
-	"ZEN"  : "horizen",
+	"ZEN"  : "zencash",
 	"PERX" : "peerex-network",
-	"DIA"  : "dia",
+	"DIA"  : "dia-data",
 	"ESS"  : "essentia",
 	"FERA" : "fera",
 	"TRADE": "unitrade",
 	"OM"   : "mantra-dao",
-	"WOM"  : "wom-protocol",
+	"WOM"  : "wom-token",
 	"PASTA": "spaghetti",
 	"YFT"  : "yield-farming-token",
 	"UNCX" : "unicrypt",
 	"PYLON": "pylon-finance",
 	"YFT"  : "yield-farming-token",
-	"EFX"  : "effect-ai",
-	"CHR"  : "chromia",
-	"ANKR" : "ankr-network",
+	"EFX"  : "effect-network",
+	"CHR"  : "chromaway",
+	"ANKR" : "ankr",
 	"BID"  : "bidao",
 	"UNI"  : "uniswap",
 	"N3RD" : "n3rd-finance",
@@ -216,6 +199,13 @@ CRYPTO_LOOKUP = {
 	"KEK"  : "cryptokek",
 	"MOD"  : "modefi",
 	"BART" : "bartertrade",
-	"UDO"  : "unido",
-	"NDS"  : "nodeseeds"
+	"UDO"  : "unido-ep",
+	"NDS"  : "nodeseeds",
+	"BSKT" : "basketcoin",
+	"DRCT" : "ally-direct",
+	"DEFT" : "defi-factory-token",
+	"DEXT" : "dextools",
+	"POLC" : "polka-city",
+	"PUNDIX": "pundi-x-2",
+	"SHIBAKEN": "shibaken-finance"
 }
